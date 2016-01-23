@@ -1,0 +1,98 @@
+
+#include <Wire.h>
+#include <TEA5767Radio.h>
+
+TEA5767Radio radio = TEA5767Radio();
+
+boolean iNumberToSegments[10][8] = { {1,1,1,1,1,1,0,0},
+                                       {0,1,1,0,0,0,0,0},
+                                       {1,1,0,1,1,0,1,0}, 
+                                       {1,1,1,1,0,0,1,0}, 
+                                       {0,1,1,0,0,1,1,0}, 
+                                       {1,0,1,1,0,1,1,0}, 
+                                       {1,0,1,1,1,1,1,0}, 
+                                       {1,1,1,0,0,0,0,0},
+                                       {1,1,1,1,1,1,1,0}, 
+                                       {1,1,1,1,0,1,1,0}  };
+  /*
+    0 = a
+    1 = b
+    2 = c
+    3 = d
+    4 = e
+    5 = f
+    6 = g
+    7 = dp
+  */
+  
+  int iDigit[] = {0, 0, 0, 0};
+
+void setup()
+{ 
+  Wire.begin();
+  Serial.begin(9600);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  
+}
+
+void loop()
+{
+  int reading = analogRead(0);
+  //frequency = map((float)reading, 0.0, 1024.0, 87.5, 108.0);
+  Serial.print(reading);
+  Serial.print("  ");
+  double frequency = ((double)reading * (108.0 - 87.5)) / 1024.0 + 87.5;
+  Serial.print(frequency);
+  Serial.print("  ");
+  frequency = round(frequency * 10) / 10.0;
+  radio.setFrequency(frequency);
+  Serial.print(frequency);
+  
+  frequency *= 10;
+  iDigit[0] = (int)frequency % 10;
+  frequency /= 10;
+  iDigit[1] = (int)frequency % 10;
+  frequency /= 10;
+  iDigit[2] = (int)frequency % 10;
+  frequency /= 10;
+  iDigit[3] = (int)frequency % 10;
+  
+  Serial.print("  ");
+  Serial.print(iDigit[3]);
+  Serial.print("  ");
+  Serial.print(iDigit[2]);
+  Serial.print("  ");
+  Serial.print(iDigit[1]);
+  Serial.print("  ");
+  Serial.println(iDigit[0]);
+   
+PrintDigit();
+}
+void PrintDigit(){ 
+  for(int iDigits = 0; iDigits < 4; iDigits ++){
+    for(int iPrint = 0; iPrint < 8; iPrint++){
+      if(iNumberToSegments[iDigit[iDigits]][iPrint]){
+        digitalWrite(iPrint + 2, LOW);
+      }
+      else digitalWrite(iPrint + 2, HIGH);  
+    }
+    digitalWrite(10, LOW);
+    digitalWrite(11, LOW);
+    digitalWrite(12, LOW);
+    digitalWrite(13, LOW);
+    
+    digitalWrite(iDigits + 10 ,HIGH);
+    delay(1);
+  }
+}
