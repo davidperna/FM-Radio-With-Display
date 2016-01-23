@@ -1,0 +1,145 @@
+//For this to work, you must have the TEA5767 already initialized and set on a channel. This can be done by running a sketch which uses the Wire library like the "FM_Radio_Without_Library" sketch
+ int clockPin = 3;
+ int dataPin = 2;
+void setup()
+{
+ pinMode(clockPin, OUTPUT); 
+ pinMode(dataPin, OUTPUT); 
+ pinMode(4, OUTPUT); 
+}
+
+void loop()
+{
+  digitalWrite(clockPin, HIGH);
+  digitalWrite(dataPin, HIGH);
+  delay(100);
+  digitalWrite(dataPin, LOW);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  //Address
+  sendBit(1);
+  sendBit(1);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  
+  digitalWrite(4, HIGH);
+  delay(3000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  
+  //Byte1
+  sendBit(0);
+  sendBit(0);
+  sendBit(1);
+  sendBit(1);
+  sendBit(0);
+  sendBit(0);
+  sendBit(1);
+  sendBit(1);
+  
+  digitalWrite(4, HIGH);
+  delay(3000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  
+  //Byte2
+  sendBit(0);
+  sendBit(0);
+  sendBit(1);
+  sendBit(0);
+  sendBit(1);
+  sendBit(1);
+  sendBit(0);
+  sendBit(1);
+  
+  digitalWrite(4, HIGH);
+  delay(3000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+ 
+  //Byte3
+  sendBit(1);
+  sendBit(0);
+  sendBit(1);
+  sendBit(1);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  
+  digitalWrite(4, HIGH);
+  delay(3000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  
+  //Byte4
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(1);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  
+  digitalWrite(4, HIGH);
+  delay(3000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  
+  //Byte5
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  sendBit(0);
+  digitalWrite(4, HIGH);
+  delay(5000);
+  digitalWrite(4, LOW);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  
+  digitalWrite(dataPin, LOW);
+  delay(100);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(dataPin, HIGH);
+  delay(100);
+}
+
+void sendBit(int iBit)
+{
+  digitalWrite(clockPin, LOW);
+  delay(100);
+  digitalWrite(dataPin, iBit);
+  delay(100);
+  digitalWrite(clockPin, HIGH);
+  delay(100);
+  digitalWrite(clockPin, LOW);
+  delay(100);
+}
